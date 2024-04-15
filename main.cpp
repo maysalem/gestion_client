@@ -1,26 +1,16 @@
-#include "mainwindow.h"
+#include <QCoreApplication>
+#include"DuMesengerServer.h"
 
-#include <QApplication>
-#include <QMessageBox>
-#include "connexion.h"
+using namespace DuarteCorporation;
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    connexion c;
-    bool test=c.ouvrirconnexion();
-    if(test)
-    {w.show();
-        QMessageBox::critical(nullptr, QObject::tr("database is open"),
-                    QObject::tr("connection successful.\n"
-                                "Click Cancel to exit."), QMessageBox::Cancel);
-
-}
-    else
-        QMessageBox::critical(nullptr, QObject::tr("database is not open"),
-                    QObject::tr("connection failed.\n"
-                                "Click Cancel to exit."), QMessageBox::Cancel);
-
+    QCoreApplication a(argc, argv);
+    DuMesengerServer Server;
+    if(!Server.startServer(300)){
+        qDebug() << "Error:" << Server.errorString();
+        return 1;
+    }
+    qDebug() << "Server Started  ..." ;
 
 
     return a.exec();
